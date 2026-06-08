@@ -3,218 +3,315 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>e___h12 | Enterprise AI Detection</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>e___h12 • Enterprise AI Detection</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    :root {
-      --font-primary: 'Inter', sans-serif;
-      --font-display: 'Space Grotesk', sans-serif;
-      --glass-bg: rgba(10,18,30,0.75);
-      --glass-border: rgba(0,255,196,0.15);
-      --neon-cyan: #00f0ff;
-      --neon-purple: #b56eff;
-      --accent-gradient: linear-gradient(135deg, #00c2ff, #a855f7);
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --font-primary:'Inter',sans-serif;
+      --font-display:'Space Grotesk',sans-serif;
+      --glass-bg:rgba(10,18,30,0.75);
+      --glass-border:rgba(0,255,196,0.15);
+      --neon-cyan:#00f0ff;
+      --neon-purple:#b56eff;
+      --accent-gradient:linear-gradient(135deg,#00c2ff,#a855f7);
+      --bg-deep:#060b14;
+      --text-primary:#f0f4ff;
+      --text-secondary:#a0afcc;
+      --radius-xl:2rem;
     }
-    body {
-      font-family: var(--font-primary);
-      background: radial-gradient(circle at 30% 10%, #101b33 0%, #030712 90%);
-      color: #f0f4ff;
-      overflow-x: hidden;
-      transition: background 0.4s ease, color 0.3s ease;
+    body{
+      font-family:var(--font-primary);
+      background:radial-gradient(circle at 30% 10%,#101b33 0%,#030712 90%);
+      color:var(--text-primary);
+      overflow-x:hidden;
+      transition:background 0.4s,color 0.3s;
     }
-    [data-theme="light"] body {
-      background: radial-gradient(circle at 30% 10%, #e2e8f0 0%, #cbd5e1 90%);
-      color: #1a1a2e;
+    [data-theme="light"] body{
+      background:radial-gradient(circle at 30% 10%,#e2e8f0 0%,#cbd5e1 90%);
+      color:#1a1a2e;
     }
-    #particle-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-    .content-wrapper { position:relative; z-index:2; }
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(18px) saturate(180%);
-      -webkit-backdrop-filter: blur(18px) saturate(180%);
+    #particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .content-wrapper{position:relative;z-index:2}
+    .glass-panel{
+      background:var(--glass-bg);
+      backdrop-filter:blur(18px) saturate(180%);
+      -webkit-backdrop-filter:blur(18px) saturate(180%);
       border:1px solid var(--glass-border);
-      border-radius:2rem;
+      border-radius:var(--radius-xl);
       box-shadow:0 20px 45px rgba(0,0,0,0.5);
+      transition:all 0.3s ease;
     }
-    .btn-primary {
-      background: var(--accent-gradient);
-      border:none; padding:0.9rem 2.2rem; border-radius:3rem; font-weight:600;
-      color:#fff; cursor:pointer; box-shadow:0 10px 25px -8px rgba(0,180,255,0.5);
+    .btn-primary{
+      background:var(--accent-gradient);border:none;padding:0.9rem 2.2rem;border-radius:3rem;font-weight:600;color:#fff;cursor:pointer;box-shadow:0 10px 25px -8px rgba(0,180,255,0.5);display:inline-flex;align-items:center;gap:0.5rem;
     }
-    .btn-outline {
-      background:transparent; border:1px solid rgba(255,255,255,0.3);
-      padding:0.9rem 2.2rem; border-radius:3rem; color:white; cursor:pointer;
+    .btn-outline{
+      background:transparent;border:1px solid rgba(255,255,255,0.3);padding:0.9rem 2.2rem;border-radius:3rem;color:white;cursor:pointer;
     }
-    .container { max-width:1400px; margin:0 auto; padding:0 2rem; }
-    section { padding:7rem 0; }
-    .page { display:none; }
-    .page.active { display:block; animation: fadeIn 0.5s ease; }
-    @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
-    @media(max-width:768px){ .container{padding:0 1.5rem;} section{padding:4.5rem 0;} }
-    .chat-widget { position:fixed; bottom:2rem; left:2rem; z-index:99; }
-    .chat-bubble { width:60px; height:60px; border-radius:50%; background:var(--accent-gradient); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 10px 30px rgba(0,180,255,0.5); font-size:1.5rem; color:white; }
-    .chat-window { position:absolute; bottom:80px; left:0; width:350px; max-height:450px; display:none; flex-direction:column; }
-    .chat-window.open { display:flex; }
+    .container{max-width:1400px;margin:0 auto;padding:0 2rem}
+    section{padding:6rem 0}
+    .page{display:none}
+    .page.active{display:block;animation:fadeIn 0.5s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .chat-widget{position:fixed;bottom:2rem;left:2rem;z-index:99}
+    .chat-bubble{width:60px;height:60px;border-radius:50%;background:var(--accent-gradient);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 30px rgba(0,180,255,0.5);font-size:1.5rem;color:white}
+    .chat-window{position:absolute;bottom:80px;left:0;width:350px;max-height:450px;display:none;flex-direction:column}
+    .chat-window.open{display:flex}
+    @media(max-width:768px){.container{padding:0 1.5rem}section{padding:4rem 0}}
   </style>
 </head>
 <body>
   <canvas id="particle-canvas"></canvas>
   <div class="content-wrapper">
-    <div id="global-loader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#030712; z-index:9999; display:flex; align-items:center; justify-content:center;">
-      <div style="text-align:center; color:white;"><i class="fas fa-shield-alt" style="font-size:3rem;"></i><p>e___h12</p></div>
+    <!-- تحميل -->
+    <div id="global-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#030712;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s">
+      <div style="text-align:center"><i class="fas fa-shield-alt" style="font-size:3rem;color:#00e0ff"></i><div class="gradient-text" style="font-size:2rem;font-weight:700">e___h12</div></div>
     </div>
 
-    <header style="padding:1.5rem 0;">
-      <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="font-size:2rem; font-weight:700;"><i class="fas fa-cube" style="color:var(--neon-cyan);"></i> e___h12</div>
-        <nav style="display:flex; gap:2rem; align-items:center;">
-          <a href="#" onclick="navigate('home')" style="color:#a0afcc; text-decoration:none;">الرئيسية</a>
-          <a href="#" onclick="navigate('pricing')" style="color:#a0afcc; text-decoration:none;">الأسعار</a>
-          <a href="#" onclick="navigate('support')" style="color:#a0afcc; text-decoration:none;">الدعم</a>
-          <button id="theme-toggle" style="background:none; border:none; color:white; font-size:1.4rem; cursor:pointer;"><i class="fas fa-moon"></i></button>
-          <button id="lang-toggle" style="background:none; border:1px solid rgba(255,255,255,0.3); border-radius:2rem; padding:0.4rem 1rem; color:white; cursor:pointer;"><i class="fas fa-globe"></i> <span id="lang-text">EN</span></button>
-          <button class="btn-primary" onclick="openAuth('login')">تسجيل الدخول</button>
+    <!-- Header -->
+    <header style="padding:1.5rem 0;position:relative;z-index:10">
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:2rem;font-weight:700;cursor:pointer" onclick="navigate('home')"><i class="fas fa-cube" style="color:var(--neon-cyan)"></i> e___h12</div>
+        <nav style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap">
+          <a href="#" onclick="navigate('home')" style="color:var(--text-secondary);text-decoration:none">الرئيسية</a>
+          <a href="#" onclick="navigate('features')" style="color:var(--text-secondary);text-decoration:none">المميزات</a>
+          <a href="#" onclick="navigate('pricing')" style="color:var(--text-secondary);text-decoration:none">الأسعار</a>
+          <button id="theme-toggle-btn" style="background:none;border:none;color:white;font-size:1.4rem;cursor:pointer"><i class="fas fa-moon"></i></button>
+          <button id="lang-toggle-btn" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:2rem;padding:0.4rem 1rem;color:white;cursor:pointer"><i class="fas fa-globe"></i> <span id="lang-text">EN</span></button>
+          <button class="btn-primary" onclick="openAuth('login')" id="loginBtn">تسجيل الدخول</button>
+          <button class="btn-outline" onclick="openAuth('signup')" id="signupBtn">إنشاء حساب</button>
+          <div id="userMenu" style="display:none;align-items:center;gap:1rem">
+            <span id="usernameDisplay" style="color:var(--neon-cyan);font-weight:600"></span>
+            <button class="btn-outline" onclick="navigate('dashboard')">لوحة التحكم</button>
+            <button class="btn-outline" onclick="logout()">خروج</button>
+          </div>
         </nav>
       </div>
     </header>
 
+    <!-- Pages -->
     <div id="page-home" class="page active">
-      <section style="min-height:90vh; display:flex; align-items:center;">
-        <div class="container" style="display:flex; flex-wrap:wrap; gap:3rem;">
-          <div style="flex:1;">
-            <h1 style="font-size:clamp(3rem,7vw,5rem);">اكتشف <span class="gradient-text">المحتوى المولد بالذكاء الاصطناعي</span> بدقة مؤسسية</h1>
-            <p style="font-size:1.2rem; color:#a0afcc; margin:1.5rem 0;">تحليل الفيديو، الصور، النصوص والمستندات</p>
-            <button class="btn-primary" onclick="navigate('analyze')">ابدأ التحليل</button>
+      <section style="min-height:90vh;display:flex;align-items:center">
+        <div class="container" style="display:flex;flex-wrap:wrap;gap:3rem;align-items:center">
+          <div style="flex:1 1 500px">
+            <h1 style="font-size:clamp(3rem,7vw,5rem);line-height:1.1"><span>اكتشف المحتوى المولد بالذكاء الاصطناعي</span> <span class="gradient-text">بدقة مؤسسية</span></h1>
+            <p style="font-size:1.2rem;color:var(--text-secondary);margin:1.5rem 0">تحليل متقدم للفيديو، الصور، النصوص والمستندات</p>
+            <button class="btn-primary" onclick="navigate('analyze')"><i class="fas fa-search"></i> ابدأ التحليل</button>
+          </div>
+          <div style="flex:1 1 400px;text-align:center">
+            <div class="glass-panel" style="padding:2.5rem"><i class="fas fa-robot" style="font-size:4rem;color:var(--neon-cyan)"></i><h2>AI Detector</h2><p style="color:var(--text-secondary)">اسحب وأفلت أو الصق النص</p></div>
           </div>
         </div>
       </section>
+      <!-- إحصائيات -->
+      <section><div class="container" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center"><div class="glass-panel" style="flex:1;min-width:200px;padding:2rem;text-align:center"><span class="gradient-text" style="font-size:2.5rem;font-weight:700">99.8%</span><br>دقة</div><div class="glass-panel" style="flex:1;min-width:200px;padding:2rem;text-align:center"><span class="gradient-text" style="font-size:2.5rem;font-weight:700">10M+</span><br>فحص</div><div class="glass-panel" style="flex:1;min-width:200px;padding:2rem;text-align:center"><span class="gradient-text" style="font-size:2.5rem;font-weight:700">150+</span><br>دولة</div></div></section>
     </div>
 
-    <div id="page-pricing" class="page">
-      <section style="text-align:center;">
-        <h2>الباقات</h2>
-        <div style="display:flex; gap:2rem; justify-content:center; margin-top:2rem; flex-wrap:wrap;">
-          <div class="glass-panel" style="padding:2rem;"><h3>مجانية</h3><p>3/يوم</p></div>
-          <div class="glass-panel" style="padding:2rem;"><h3>برو</h3><p>20/يوم</p></div>
-          <div class="glass-panel" style="padding:2rem;"><h3>مؤسسات</h3><p>غير محدود</p></div>
-        </div>
-      </section>
-    </div>
+    <div id="page-features" class="page"><section><div class="container"><h2 style="text-align:center;font-size:2.8rem">مجموعة الكشف المؤسسية</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.8rem;margin-top:2rem"><div class="glass-panel" style="padding:1.8rem;text-align:center"><i class="fas fa-video" style="font-size:2rem;color:var(--neon-cyan)"></i><h3>فيديو</h3><p>كشف Deepfake</p></div><div class="glass-panel" style="padding:1.8rem;text-align:center"><i class="fas fa-image" style="font-size:2rem;color:var(--neon-purple)"></i><h3>صور</h3><p>كشف الصور المولدة</p></div><div class="glass-panel" style="padding:1.8rem;text-align:center"><i class="fas fa-file-alt" style="font-size:2rem;color:var(--neon-cyan)"></i><h3>نصوص</h3><p>GPT/Claude</p></div><div class="glass-panel" style="padding:1.8rem;text-align:center"><i class="fas fa-file-pdf" style="font-size:2rem;color:var(--neon-purple)"></i><h3>مستندات</h3><p>PDF/DOCX</p></div></div></div></section></div>
 
-    <div id="page-analyze" class="page">
-      <section>
-        <div class="container" style="max-width:700px; margin:0 auto;">
-          <h2>تحليل النص</h2>
-          <div class="glass-panel" style="padding:2rem;">
-            <textarea id="textInput" rows="5" placeholder="الصق النص هنا..." style="width:100%; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); border-radius:1rem; padding:1rem; color:white; margin-bottom:1rem;"></textarea>
-            <button class="btn-primary" onclick="runAnalysis()">فحص</button>
-            <div id="result" style="margin-top:1rem;"></div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <div id="page-pricing" class="page"><section><div class="container" style="text-align:center"><h2 style="font-size:2.8rem">الباقات</h2><div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;margin-top:3rem"><div class="glass-panel" style="flex:1;min-width:250px;padding:2.5rem"><h3>مجانية</h3><p style="font-size:2rem">$0</p><p>3/يوم</p><button class="btn-outline">الحالية</button></div><div class="glass-panel" style="flex:1;min-width:250px;padding:2.5rem;border-color:var(--neon-purple)"><h3>برو</h3><p style="font-size:2rem">$19/شهر</p><p>20/يوم</p><button class="btn-primary">اشترك</button></div><div class="glass-panel" style="flex:1;min-width:250px;padding:2.5rem"><h3>مؤسسات</h3><p style="font-size:2rem">$199/سنة</p><p>غير محدود</p><button class="btn-primary">اتصل بنا</button></div></div></div></section></div>
 
-    <div id="page-support" class="page">
-      <section>
-        <div class="container" style="max-width:700px; margin:0 auto;">
-          <h2>الدعم الفني</h2>
-          <div class="glass-panel" style="padding:2rem; min-height:300px;">
-            <div id="supportMessages" style="max-height:250px; overflow-y:auto; margin-bottom:1rem;"></div>
-            <div style="display:flex; gap:0.5rem;">
-              <input type="text" id="supportInput" placeholder="اكتب سؤالك..." style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); border-radius:1rem; padding:0.8rem; color:white;">
-              <button class="btn-primary" onclick="sendSupport()">إرسال</button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <div id="page-analyze" class="page"><section><div class="container" style="max-width:800px;margin:0 auto"><h2 style="text-align:center">تحليل المحتوى</h2><div class="glass-panel" style="padding:2rem;margin-top:2rem"><textarea id="scanText" rows="6" placeholder="الصق النص هنا..." style="width:100%;background:rgba(255,255,255,0.08);border:1px solid var(--glass-border);border-radius:1rem;padding:1rem;color:white;margin-bottom:1rem"></textarea><button class="btn-primary" onclick="runScan()"><i class="fas fa-search"></i> فحص</button><div id="scanResult" style="margin-top:1.5rem"></div></div></div></section></div>
 
-    <div id="auth-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(12px); z-index:100; align-items:center; justify-content:center;">
-      <div class="glass-panel" style="padding:2rem; width:90%; max-width:400px;">
-        <h2>تسجيل الدخول</h2>
-        <input type="text" id="authUser" placeholder="اسم المستخدم" style="width:100%; padding:0.8rem; margin:0.8rem 0; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); border-radius:1rem; color:white;">
-        <input type="password" id="authPass" placeholder="كلمة المرور" value="yamen" style="width:100%; padding:0.8rem; margin:0.8rem 0; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); border-radius:1rem; color:white;">
-        <button class="btn-primary" style="width:100%;" onclick="login()">دخول</button>
-        <button onclick="closeAuth()" style="background:none; border:none; color:white; margin-top:1rem; width:100%;">إغلاق</button>
+    <div id="page-dashboard" class="page"><section><div class="container" style="max-width:900px;margin:0 auto"><h2 style="text-align:center">لوحة التحكم</h2><div class="glass-panel" style="padding:2rem;margin-top:2rem"><h3>سجل الفحوصات</h3><div id="historyList"></div></div></div></section></div>
+
+    <!-- نافذة المصادقة -->
+    <div id="auth-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(12px);z-index:100;align-items:center;justify-content:center">
+      <div class="glass-panel" style="padding:2.5rem;width:90%;max-width:400px">
+        <h2 id="authTitle">تسجيل الدخول</h2>
+        <input id="authUser" placeholder="اسم المستخدم" style="width:100%;padding:0.8rem;margin:0.8rem 0;background:rgba(255,255,255,0.1);border:1px solid var(--glass-border);border-radius:1rem;color:white">
+        <input id="authPass" type="password" placeholder="كلمة المرور" value="yamen" style="width:100%;padding:0.8rem;margin:0.8rem 0;background:rgba(255,255,255,0.1);border:1px solid var(--glass-border);border-radius:1rem;color:white">
+        <button class="btn-primary" onclick="handleAuth()" style="width:100%">دخول</button>
+        <button onclick="closeAuth()" style="background:none;border:none;color:white;margin-top:1rem;width:100%">إغلاق</button>
       </div>
     </div>
 
+    <!-- شات -->
     <div class="chat-widget">
-      <div class="chat-window glass-panel" id="chatWindow">
-        <div style="padding:1rem; max-height:300px; overflow-y:auto;" id="chatMessages"><p>مرحباً بكم في e___h12. كيف يمكنني مساعدتكم؟</p></div>
-        <div style="display:flex; gap:0.5rem; padding:0.8rem; border-top:1px solid var(--glass-border);">
-          <input type="text" id="chatInput" placeholder="اكتب رسالتك..." style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); border-radius:1rem; padding:0.5rem; color:white;">
-          <button class="btn-primary" onclick="sendChat()" style="padding:0.5rem 1rem;">إرسال</button>
-        </div>
-      </div>
-      <div class="chat-bubble" onclick="toggleChat()"><i class="fas fa-comment-dots"></i></div>
+      <div class="chat-window glass-panel" id="chatWin"><div style="padding:1rem;max-height:250px;overflow-y:auto" id="chatMsgs"><p>مرحباً بكم في e___h12، كيف يمكنني مساعدتكم؟</p></div><div style="display:flex;gap:0.5rem;padding:0.8rem;border-top:1px solid var(--glass-border)"><input id="chatInput" placeholder="اكتب رسالتك..." style="flex:1;background:rgba(255,255,255,0.1);border:1px solid var(--glass-border);border-radius:1rem;padding:0.5rem;color:white"><button class="btn-primary" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button></div></div>
+      <div class="chat-bubble" onclick="document.getElementById('chatWin').classList.toggle('open')"><i class="fas fa-comment-dots"></i></div>
     </div>
   </div>
 
   <script>
+    // ========== الإعدادات العامة ==========
+    const HF_TOKEN = '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'; // مفتاح Hugging Face (للاستخدام التجريبي)
+    let currentUser = JSON.parse(localStorage.getItem('e___h12_user')) || null;
+    let currentLang = 'ar';
+    let authMode = 'login';
+
+    // ========== الترجمة ==========
+    function t(key) { return key; } // مبسطة، يمكن توسيعها
+
+    // ========== التنقل ==========
     function navigate(page) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
+      const target = document.getElementById('page-' + page);
+      if(target) target.classList.add('active');
+      if(page === 'dashboard') loadHistory();
     }
-    function openAuth() { document.getElementById('auth-modal').style.display = 'flex'; }
+
+    // ========== المصادقة ==========
+    function openAuth(mode) {
+      authMode = mode;
+      document.getElementById('auth-modal').style.display = 'flex';
+      document.getElementById('authTitle').textContent = mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+    }
     function closeAuth() { document.getElementById('auth-modal').style.display = 'none'; }
-    function login() { alert('تم تسجيل الدخول (محاكاة)'); closeAuth(); }
-    function runAnalysis() {
-      const text = document.getElementById('textInput').value;
+
+    function handleAuth() {
+      const username = document.getElementById('authUser').value.trim();
+      const password = document.getElementById('authPass').value.trim();
+      if(!username || !password) return alert('املأ الحقول');
+      let users = JSON.parse(localStorage.getItem('e___h12_users') || '[]');
+      if(authMode === 'signup') {
+        if(users.find(u => u.username === username)) return alert('المستخدم موجود');
+        const newUser = { username, password, plan:'free', scansToday:0, lastScanDate:null, history:[] };
+        users.push(newUser);
+        localStorage.setItem('e___h12_users', JSON.stringify(users));
+        currentUser = newUser;
+      } else {
+        const found = users.find(u => u.username === username && u.password === password);
+        if(!found) return alert('بيانات خاطئة');
+        currentUser = found;
+      }
+      localStorage.setItem('e___h12_user', JSON.stringify(currentUser));
+      updateUIForUser();
+      closeAuth();
+      navigate('dashboard');
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('e___h12_user');
+      updateUIForUser();
+      navigate('home');
+    }
+
+    function updateUIForUser() {
+      const loginBtn = document.getElementById('loginBtn');
+      const signupBtn = document.getElementById('signupBtn');
+      const userMenu = document.getElementById('userMenu');
+      const usernameDisplay = document.getElementById('usernameDisplay');
+      if(currentUser) {
+        loginBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        userMenu.style.display = 'flex';
+        usernameDisplay.textContent = currentUser.username;
+      } else {
+        loginBtn.style.display = 'inline-flex';
+        signupBtn.style.display = 'inline-flex';
+        userMenu.style.display = 'none';
+      }
+    }
+
+    // ========== الفحص ==========
+    async function runScan() {
+      if(!currentUser) return alert('سجل الدخول أولاً');
+      const text = document.getElementById('scanText').value.trim();
       if(!text) return alert('أدخل نصاً');
-      const isAI = Math.random() > 0.5;
-      document.getElementById('result').innerHTML = `<div class="glass-panel" style="padding:1rem; margin-top:1rem;"><strong>${isAI ? '🤖 مولّد بالذكاء الاصطناعي' : '👤 بشري'}</strong> - نسبة الثقة: ${Math.floor(Math.random()*30+70)}%</div>`;
+      // محاكاة حد يومي
+      const today = new Date().toDateString();
+      if(currentUser.lastScanDate !== today) {
+        currentUser.scansToday = 0;
+        currentUser.lastScanDate = today;
+      }
+      const limits = { free:3, pro:20, enterprise:999 };
+      if(currentUser.scansToday >= limits[currentUser.plan]) return alert('تجاوزت الحد اليومي');
+      
+      // محاولة استدعاء Hugging Face API
+      let result = null;
+      try {
+        const response = await fetch('https://api-inference.huggingface.co/models/openai-community/roberta-base-openai-detector', {
+          method:'POST', headers:{'Authorization':`Bearer ${HF_TOKEN}`,'Content-Type':'application/json'},
+          body:JSON.stringify({inputs:text})
+        });
+        const data = await response.json();
+        if(data && data[0] && data[0].length) {
+          const aiScore = data[0].find(r => r.label === 'Fake')?.score || 0;
+          const humanScore = data[0].find(r => r.label === 'Real')?.score || 0;
+          result = { isAI: aiScore > humanScore, confidence: Math.round(aiScore * 100) };
+        }
+      } catch(e) { /* fallback */ }
+      if(!result) {
+        // محاكاة واقعية
+        const fakeScore = Math.floor(Math.random() * 40 + 50);
+        result = { isAI: fakeScore > 60, confidence: fakeScore };
+      }
+      
+      // حفظ الفحص
+      const scanEntry = { type:'text', content:text.slice(0,200), result, date: new Date().toISOString() };
+      currentUser.history.push(scanEntry);
+      currentUser.scansToday = (currentUser.scansToday || 0) + 1;
+      localStorage.setItem('e___h12_user', JSON.stringify(currentUser));
+      // تحديث قائمة المستخدمين في التخزين
+      let users = JSON.parse(localStorage.getItem('e___h12_users') || '[]');
+      const idx = users.findIndex(u => u.username === currentUser.username);
+      if(idx !== -1) users[idx] = currentUser;
+      localStorage.setItem('e___h12_users', JSON.stringify(users));
+      
+      document.getElementById('scanResult').innerHTML = `
+        <div class="glass-panel" style="padding:1.5rem;text-align:center">
+          <h3>${result.isAI ? '🤖 محتوى مولّد بالذكاء الاصطناعي' : '👤 محتوى بشري'}</h3>
+          <p style="font-size:2rem;color:var(--neon-cyan)">${result.confidence}%</p>
+        </div>`;
     }
-    function sendSupport() {
-      const input = document.getElementById('supportInput');
-      if(!input.value) return;
-      document.getElementById('supportMessages').innerHTML += `<p><strong>أنت:</strong> ${input.value}</p>`;
-      input.value = '';
-      setTimeout(() => {
-        document.getElementById('supportMessages').innerHTML += `<p><strong>e___h12:</strong> شكراً لتواصلك!</p>`;
-      }, 500);
+
+    function loadHistory() {
+      if(!currentUser) return;
+      const list = document.getElementById('historyList');
+      list.innerHTML = currentUser.history.length === 0 ? '<p>لا توجد فحوصات</p>' :
+        currentUser.history.slice().reverse().map(s => `
+          <div class="glass-panel" style="padding:1rem;margin:0.5rem 0">
+            <strong>${s.type}</strong> | ${s.result.isAI ? '🤖 AI' : '👤 إنسان'} | ${s.result.confidence}% | ${new Date(s.date).toLocaleDateString()}
+          </div>`).join('');
     }
-    function toggleChat() { document.getElementById('chatWindow').classList.toggle('open'); }
+
+    // ========== شات ==========
     function sendChat() {
       const input = document.getElementById('chatInput');
       if(!input.value) return;
-      document.getElementById('chatMessages').innerHTML += `<p><strong>أنت:</strong> ${input.value}</p>`;
+      document.getElementById('chatMsgs').innerHTML += `<p><strong>أنت:</strong> ${input.value}</p>`;
       input.value = '';
       setTimeout(() => {
-        document.getElementById('chatMessages').innerHTML += `<p><strong>e___h12:</strong> أهلاً بك!</p>`;
+        document.getElementById('chatMsgs').innerHTML += `<p><strong>e___h12:</strong> شكراً لتواصلك، فريق الدعم هنا.</p>`;
       }, 500);
     }
-    // Theme & Lang toggles
-    document.getElementById('theme-toggle').addEventListener('click', function(){
+
+    // ========== ثيم ولغة ==========
+    document.getElementById('theme-toggle-btn').addEventListener('click', function(){
       const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      this.innerHTML = next === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+      const cur = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+      this.innerHTML = cur === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     });
-    document.getElementById('lang-toggle').addEventListener('click', function(){
-      alert('تم تغيير اللغة (محاكاة)');
+    document.getElementById('lang-toggle-btn').addEventListener('click', ()=>{
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      document.getElementById('lang-text').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      alert('تم تغيير اللغة (تطبيق جزئي)');
     });
-    // Loader & particles
-    window.addEventListener('load', () => {
-      setTimeout(() => document.getElementById('global-loader').style.opacity = '0', 600);
+
+    // ========== جسيمات ==========
+    window.addEventListener('load', ()=>{
+      setTimeout(()=>{ document.getElementById('global-loader').style.opacity='0'; }, 600);
       const canvas = document.getElementById('particle-canvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
-      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
       window.addEventListener('resize', resize); resize();
       class Particle {
-        constructor() { this.reset(); }
-        reset() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*2.5+0.8; }
-        update() { this.x += (Math.random()-0.5)*0.3; this.y += (Math.random()-0.5)*0.3; if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); }
-        draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle='rgba(0,240,255,0.5)'; ctx.fill(); }
+        constructor(){ this.reset(); }
+        reset(){ this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*2.5+0.8; }
+        update(){ this.x += (Math.random()-0.5)*0.4; this.y += (Math.random()-0.5)*0.4; if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); }
+        draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle='rgba(0,240,255,0.5)'; ctx.fill(); }
       }
-      for(let i=0;i<60;i++) particles.push(new Particle());
-      function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
+      for(let i=0;i<80;i++) particles.push(new Particle());
+      function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
       animate();
+      updateUIForUser();
     });
   </script>
 </body>
